@@ -27,5 +27,7 @@ GLFUNC(void, , BL_glBufferData, unsigned int target, GLsizeiptr size, const void
 GLFUNC(void, , BL_glBufferSubData, GLenum target, GLintptr offset, GLsizeiptr size, const void* data);
 GLFUNC(void, , BL_glBufferDataARB, unsigned int target, GLsizeiptr size, const void* data, unsigned int usage);
 GLFUNC(void, , BL_glBufferSubDataARB, GLenum target, GLintptr offset, GLsizeiptr size, const void* data);
+GLFUNC(void, , BL_glFinish);
+//GLFUNC(bool, , BL_wglMakeCurrent, HDC a, HGLRC b);
 extern char* glVersion;
 extern unsigned int glMajor;

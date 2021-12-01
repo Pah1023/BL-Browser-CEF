@@ -9,20 +9,13 @@
 
 #pragma comment(lib, "libcef.lib")
 #pragma comment(lib, "libcef_dll_wrapper.lib")
-
-// Program entry-point function.
 class BlockBrowser : public CefApp {
 public:
     BlockBrowser() {};
 private:
     IMPLEMENT_REFCOUNTING(BlockBrowser);
 };
-int main(int argc, char* argv[]) {
-    CefMainArgs main_args(GetModuleHandle(NULL));
-
-    // Optional implementation of the CefApp interface.
-    CefRefPtr<BlockBrowser> app(new BlockBrowser);
-
-    // Execute the sub-process logic. This will block until the sub-process should exit.
-    return CefExecuteProcess(main_args, app.get(), nullptr);
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
+    CefMainArgs main_args(hInstance);
+    return CefExecuteProcess(main_args, new BlockBrowser(), nullptr);
 }

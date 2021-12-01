@@ -162,11 +162,12 @@ int rbh_PatchAllMatches(unsigned int len, char* pattern, char* mask, char* repla
 // Init
 
 BlFunctionDefIntern(rbh_BlPrintf);
-
+BlFunctionDefIntern(rbh_BlCon__execute);
 bool rbh_InitInternal() {
 	InitScanner();
 
 	rbh_BlPrintf = (rbh_rbh_BlPrintfFnT)rbh_ScanFunctionHex((char*)"8D 44 24 08 33 D2 50 FF 74 24 08 33 C9 E8 ? ? ? ? 83 C4 08 C3");
+	rbh_BlCon__execute = (rbh_rbh_BlCon__executeFnT)rbh_ScanFunctionHex((char*)"51 56 57 8B F2 8B F9 6A 00");
 	if (!rbh_BlPrintf) return false;
 
 	return true;

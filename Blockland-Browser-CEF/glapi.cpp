@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include "glapi.h"
-
+#include "RedoBlHooks.hpp"
 #pragma comment(lib, "Opengl32.lib")
 
 BL_glBindTextureFn BL_glBindTexture;
@@ -23,19 +23,14 @@ BL_glBindBufferARBFn BL_glBindBufferARB;
 BL_glDeleteBuffersARBFn BL_glDeleteBuffersARB;
 BL_glBufferDataARBFn BL_glBufferDataARB;
 BL_glBufferSubDataARBFn BL_glBufferSubDataARB;
+BL_glFinishFn BL_glFinish;
+//BL_wglMakeCurrentFn BL_glMakeCurrent;
 char* glVersion;
 unsigned int glMajor;
 
-
 void* GetAnyGLFuncAddress(const char* name)
 {
-	void* p = nullptr;
-	if (BL_wglGetProcAddress) {
-		p = (void*)BL_wglGetProcAddress(name);
-	}
-	else {
-		p = (void*)wglGetProcAddress(name);
-	}
+	void* p = (void*)wglGetProcAddress(name);
 	if (p == 0 ||
 		(p == (void*)0x1) || (p == (void*)0x2) || (p == (void*)0x3) ||
 		(p == (void*)-1))
@@ -43,12 +38,11 @@ void* GetAnyGLFuncAddress(const char* name)
 		HMODULE module = LoadLibraryA("opengl32.dll");
 		p = (void*)GetProcAddress(module, name);
 	}
-
+	BlPrintf("Found %s at %08X", name, p);
 	return p;
 }
+
 void initGL() {
-	HMODULE module = LoadLibraryA("opengl32.dll");
-	BL_wglGetProcAddress = (BL_wglGetProcAddressFn)GetProcAddress(module, "wglGetProcAddress");
 	BL_glBindTexture = (BL_glBindTextureFn)GetAnyGLFuncAddress("glBindTexture");
 	BL_glGetTexLevelParameteriv = (BL_glGetTexLevelParameterivFn)GetAnyGLFuncAddress("glGetTexLevelParameteriv");
 	BL_glTexImage2D = (BL_glTexImage2DFn)GetAnyGLFuncAddress("glTexImage2D");
@@ -68,5 +62,10 @@ void initGL() {
 	BL_glDeleteBuffersARB = (BL_glDeleteBuffersARBFn)GetAnyGLFuncAddress("glDeleteBuffersARB");
 	BL_glBufferDataARB = (BL_glBufferDataARBFn)GetAnyGLFuncAddress("glBufferDataARB");
 	BL_glBufferSubDataARB = (BL_glBufferSubDataARBFn)GetAnyGLFuncAddress("glBufferSubDataARB");
+	BL_glFinish = (BL_glFinishFn)GetAnyGLFuncAddress("glFinish");
+
+	//BL_wglMakeCurrent = (BL_wglMakeCurrentFn)GetAnyGLFuncAddress("wglMakeCurrent");
 	glMajor = 0;
+
+	
 }

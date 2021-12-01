@@ -87,4 +87,7 @@ void rbh_PatchBytes(unsigned int, ADDR, BYTE*);
 void rbh_PatchInt(ADDR, int);
 
 BlFunctionDefExtern(void, , rbh_BlPrintf, const char*, ...);
+//BlFunctionDefExtern(char* , , rbh_BlCon__execute, int, const char**);
+typedef char* (__fastcall *rbh_rbh_BlCon__executeFnT)(int, const char**);
+extern rbh_rbh_BlCon__executeFnT rbh_BlCon__execute;
 
